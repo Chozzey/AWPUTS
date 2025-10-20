@@ -1,0 +1,994 @@
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  background-color: #4b0000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  padding-top: 20px;
+}
+
+.brand h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.profile {
+  text-align: center;
+  margin: 25px 0;
+}
+
+.profile .avatar {
+  font-size: 60px;
+  background-color: #fff;
+  color: #4b0000;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px auto;
+}
+
+.profile h3 {
+  margin: 5px 0;
+  color: #fff;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.menu li {
+  text-align: left;
+  margin: 10px 0;
+}
+
+.menu a {
+  display: block;
+  padding: 10px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.menu a:hover,
+.menu a.active {
+  background-color: #660000;
+  border-left: 4px solid white;
+}
+
+.logout-btn {
+  margin-top: auto;
+  margin-bottom: 30px;
+  background-color: white;
+  color: #4b0000;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background-color: #ccc;
+}
+
+/* ========== DASHBOARD LAYOUT ========== */
+body.dashboard-body {
+  margin: 0;
+  display: flex;
+  font-family: "Poppins", sans-serif;
+  background-color: #d9d9d9;
+}
+
+/* SIDEBAR */
+.dashboard-sidebar {
+  width: 250px;
+  background-color: #4b0000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  padding-top: 20px;
+}
+
+.dashboard-brand h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.dashboard-profile {
+  text-align: center;
+  margin: 25px 0;
+}
+
+.dashboard-profile .dashboard-avatar {
+  font-size: 60px;
+  background-color: #fff;
+  color: #4b0000;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px auto;
+}
+
+.dashboard-profile h3 {
+  margin: 5px 0;
+  color: #fff;
+}
+
+.dashboard-menu {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.dashboard-menu li {
+  text-align: left;
+  margin: 10px 0;
+}
+
+.dashboard-menu a {
+  display: block;
+  padding: 10px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.dashboard-menu a:hover,
+.dashboard-menu a.active {
+  background-color: #660000;
+  border-left: 4px solid white;
+}
+
+.dashboard-logout-btn {
+  margin-top: auto;
+  margin-bottom: 30px;
+  background-color: white;
+  color: #4b0000;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.dashboard-logout-btn:hover {
+  background-color: #ccc;
+}
+
+/* MAIN SECTION */
+.dashboard-main {
+  flex: 1;
+  padding: 30px;
+  background-color: #d9d9d9;
+}
+
+.dashboard-header p {
+  font-size: 18px;
+  color: #333;
+}
+
+/* Welcome Card */
+.dashboard-welcome-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 100px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.dashboard-welcome-card h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.dashboard-welcome-card p {
+  margin-top: 10px;
+  color: #666;
+  letter-spacing: 1px;
+}
+
+/* DASHBOARD GRID */
+.dashboard-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 30px;
+  gap: 40px;
+}
+
+/* LEFT BUTTONS (Add Product + Report) */
+.dashboard-left-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  max-width: 250px;
+}
+
+.dashboard-action-btn {
+  background-color: #fff;
+  border: 2px solid #4b0000;
+  color: #4b0000;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 25px;
+  font-size: 18px;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dashboard-action-btn:hover {
+  background-color: #4b0000;
+  color: #fff;
+}
+
+/* RIGHT CARDS (Product + Sold) */
+.dashboard-right-cards {
+  display: flex;
+  gap: 20px;
+  flex: 2;
+}
+
+.dashboard-card {
+  background-color: #fff;
+  flex: 1;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.dashboard-card h3 {
+  border-bottom: 3px solid #4b0000;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #111;
+}
+
+/* Value box untuk angka Product dan Sold */
+.dashboard-value-box {
+  font-size: 36px;
+  font-weight: bold;
+  border: 2px solid #4b0000;
+  border-radius: 10px;
+  padding: 15px;
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  color: #333;
+  background-color: #fff;
+}
+
+/* ========== INDEX LAYOUT ========== */
+
+/* ========== PRODUCT LAYOUT ========== */
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.product-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.progress {
+  font-size: 16px;
+  color: #555;
+}
+
+.add-product-btn {
+  background-color: #4b0000;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-product-btn:hover {
+  background-color: #770000;
+}
+
+/* SEARCH BAR */
+.search-bar {
+  margin: 20px 0;
+}
+
+.search-bar input {
+  width: 98.5%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* TABLE */
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.product-table th,
+.product-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  font-size: 15px;
+}
+
+.product-table th {
+  background-color: #f9f9f9;
+  font-weight: 600;
+}
+
+.product-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.in-stock {
+  color: green;
+  font-weight: 600;
+}
+
+.out-stock {
+  color: red;
+  font-weight: 600;
+}
+
+.use-stock-btn {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.use-stock-btn:hover {
+  background-color: #4b0000;
+  color: white;
+}
+
+/* ========== ADD PRODUCT LAYOUT ========== */
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.form-header h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.back-btn {
+  background-color: #4b0000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background-color: #770000;
+}
+
+.add-product-form {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-width: 600px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.save-btn {
+  background-color: #4b0000;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.save-btn:hover {
+  background-color: #770000;
+}
+
+
+/* ========== STOCK LAYOUT ========== */
+/* === STOCK MANAGEMENT PAGE === */
+.stock-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.stock-table thead {
+  background: #640000;
+  color: #fff;
+}
+
+.stock-table th, .stock-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.product-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.product-info img {
+  width: 45px;
+  height: 45px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.stock-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stock-btn {
+  background: #a00000;
+  color: white;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.stock-btn:hover {
+  background: #6b0000;
+}
+
+.stock-control input {
+  width: 60px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 5px;
+  background: #fafafa;
+}
+
+/* ========== CATEGORY LAYOUT ========== */
+/* === MAIN CONTAINER === */
+.main {
+  flex: 1;
+  padding: 30px;
+  background-color: #e0e0e0;
+  min-height: 100vh;
+}
+
+/* === HEADER SECTION (TITLE + BUTTON) === */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.main-header h2 {
+  margin-left: 20px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+}
+
+/* === BUTTON STYLING === */
+.action-btn {
+  background-color: #640000;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:hover {
+  background-color: #800000;
+  transform: translateY(-2px);
+}
+
+.action-btn:active {
+  transform: scale(0.97);
+}
+
+/* === TABLE STYLING === */
+.category-container {
+  width: 95%; /* Lebar tabel */
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.category-table th,
+.category-table td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.category-table th {
+  background-color: #640000;
+  color: #fff;
+}
+
+.category-table tr:hover {
+  background-color: #f7f7f7;
+}
+
+/* Kolom tombol edit/delete */
+.category-table td:last-child {
+  text-align: center;
+  width: 120px;
+}
+
+/* === TOMBOL KHUSUS DI TABEL === */
+.table-btn {
+  border: none;
+  padding: 6px 10px;
+  margin: 0 3px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 13px;
+  transition: all 0.3s;
+}
+
+/* Edit button */
+.btn-edit {
+  background-color: #c98700;
+}
+
+.btn-edit:hover {
+  background-color: #e0a500;
+}
+
+/* Delete button */
+.btn-delete {
+  background-color: #a00000;
+}
+
+.btn-delete:hover {
+  background-color: #c40000;
+}
+
+/* Tombol kecil untuk “+ Add Category” */
+.small-btn {
+  background-color: #640000;
+  color: white;
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+  border: none;
+}
+
+.small-btn:hover {
+  background-color: #7d0000;
+}
+
+
+/* === ADD CATEGORY NEW LAYOUT === */
+/* ===== FORM CARD ===== */
+.form-card {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  max-width: 600px;
+  margin-top: 20px;
+}
+
+.form-card h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 95%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #640000;
+  box-shadow: 0 0 0 2px rgba(100,0,0,0.2);
+}
+
+.required {
+  color: #640000;
+  font-weight: bold;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.action-btn {
+  background-color: #640000;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.action-btn:hover {
+  background-color: #8b0000;
+}
+
+.cancel-btn {
+  background-color: #f3f4f6;
+  color: #333;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #e5e7eb;
+}
+
+/* ===== HEADER FLEX (judul + tombol kembali) ===== */
+.header-flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.back-btn {
+  background-color: transparent;
+  border: 1px solid #640000;
+  color: #640000;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background-color: #640000;
+  color: #fff;
+}
+
+/* ========== DISCOUNT LAYOUT ========== */
+.discount-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.discount-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.discount-table th, .discount-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.discount-table th {
+  background-color: #f8f8f8;
+  color: #333;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.discount-table tr:hover {
+  background: #fafafa;
+  transition: 0.2s ease;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.status.active {
+  background-color: #c4f1c4;
+  color: #006600;
+}
+
+.status.inactive {
+  background-color: #f7caca;
+  color: #990000;
+}
+
+/* ========== REPORT LAYOUT ========== */
+/* REPORT STYLING */
+.report-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #d9d9d9;
+  min-height: 100vh;
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.report-title {
+  font-size: 32px;
+  color: #660000;
+  font-weight: 600;
+  margin: 0;
+}
+
+.report-nav {
+  display: flex;
+  gap: 15px;
+}
+
+.report-back-link,
+.report-logout-link {
+  color: #4b0000;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.report-back-link:hover,
+.report-logout-link:hover {
+  color: #660000;
+  text-decoration: underline;
+}
+
+.report-filter-section {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.report-subheading {
+  font-size: 20px;
+  color: #4b0000;
+  margin-bottom: 15px;
+}
+
+.report-filter-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.report-input {
+  padding: 10px;
+  border: 2px solid #4b0000;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 250px;
+  transition: border-color 0.3s ease;
+}
+
+.report-input:focus {
+  border-color: #660000;
+  outline: none;
+}
+
+.report-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #4b0000;
+  color: white;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.report-button:hover {
+  background-color: #660000;
+}
+
+.report-print-button {
+  background-color: #660000;
+}
+
+.report-print-button:hover {
+  background-color: #4b0000;
+}
+
+.report-table-section {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.report-table-header {
+  background-color: #4b0000;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.report-table-cell {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.report-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.report-table tr:hover {
+  background-color: #f1e0e0;
+}
+
+.report-no-data {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .report-container {
+    padding: 15px;
+  }
+
+  .report-filter-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .report-input {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .report-table-header,
+  .report-table-cell {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .report-title {
+    font-size: 24px;
+  }
+
+  .report-subheading {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .report-nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .report-nav a {
+    margin: 5px 0;
+  }
+}

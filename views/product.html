@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semua Produk | NScommerce</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="dashboard-body">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand">
+      <h2>NScommerce</h2>
+    </div>
+
+    <div class="profile">
+      <div class="avatar">👤</div>
+      <h3>NSLooks</h3>
+    </div>
+
+    <ul class="menu">
+      <li><a href="/">🏬 View Store</a></li>
+      <li><a href="/dashboard">🏠 Dashboard</a></li>
+      <hr>
+      <li><a href="/product" class="active">Product</a></li>
+      <li><a href="/stock">Stock</a></li>
+      <li><a href="/category">Category</a></li>
+      <li><a href="/discount">Discount</a></li>
+    </ul>
+
+    <form action="/logout" method="get">
+      <button class="logout-btn">Logout</button>
+    </form>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="product-header">
+      <div>
+        <h1>Semua Produk</h1>
+        <div class="progress">0 / 100</div>
+      </div>
+      <button class="add-product-btn" onclick="window.location.href='/addproduct'">+ Add Product</button>
+    </div>
+
+    <!-- SEARCH BAR -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="🔍 Cari nama produk..." onkeyup="filterProducts()">
+    </div>
+
+    <!-- TABLE -->
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>Gambar</th>
+          <th>Nama</th>
+          <th>Kategori</th>
+          <th>Inventaris</th>
+          <th>Harga</th>
+          <th>Ketersediaan</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="productBody"></tbody>
+    </table>
+
+    <!-- Modal Edit (hidden awalnya) -->
+    <div id="editModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
+      <div style="background:white; margin:15% auto; padding:20px; width:50%; border-radius:10px;">
+        <h2>Edit Produk</h2>
+        <form id="editForm">
+          <input type="hidden" id="editId">
+          <label for="editName">Nama:</label>
+          <input type="text" id="editName" required><br><br>
+          <label for="editCode">Code:</label>
+          <input type="text" id="editCode" required><br><br>
+          <label for="editCategory">Kategori:</label>
+          <input type="text" id="editCategory"><br><br>
+          <label for="editStock">Stock:</label>
+          <input type="number" id="editStock" required><br><br>
+          <label for="editPrice">Harga:</label>
+          <input type="number" id="editPrice" required><br><br>
+          <label for="editSize">Size:</label>
+          <input type="text" id="editSize"><br><br>
+          <label for="editImage">Image URL:</label>
+          <input type="text" id="editImage"><br><br>
+          <button type="button" onclick="saveEdit()">Simpan</button>
+          <button type="button" onclick="closeModal()">Batal</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // load data produk dari JSON
+    async function loadProducts() {
+      try {
+        const res = await fetch('/api');
+        const data = await res.json();
+        const tbody = document.getElementById('productBody');
+        tbody.innerHTML = '';
+
+        if (data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Belum ada produk</td></tr>`;
+          document.querySelector('.progress').textContent = `0 / 100`;
+          return;
+        }
+
+        document.querySelector('.progress').textContent = `${data.length} / 100`;
+
+        // Kelompokkan produk berdasarkan nama
+        const groupedProducts = {};
+        data.forEach(p => {
+          if (!groupedProducts[p.name]) {
+            groupedProducts[p.name] = {
+              codes: [],
+              totalStock: 0,
+              category: p.category || '-',
+              prices: [],
+              sizes: new Set(),
+              image: p.image || '/default.png'
+            };
+          }
+          groupedProducts[p.name].codes.push(p.code || '-');
+          groupedProducts[p.name].totalStock += p.stock || 0;
+          groupedProducts[p.name].prices.push(p.price || 0);
+          if (p.size) groupedProducts[p.name].sizes.add(p.size);
+        });
+
+        // Ubah ke array untuk loop
+        const uniqueProducts = Object.keys(groupedProducts).map(name => ({
+          name,
+          codes: groupedProducts[name].codes.join(', '),
+          totalStock: groupedProducts[name].totalStock,
+          category: groupedProducts[name].category,
+          price: groupedProducts[name].prices.length > 1 
+            ? `Rp${Math.min(...groupedProducts[name].prices).toLocaleString()} - Rp${Math.max(...groupedProducts[name].prices).toLocaleString()}`
+            : `Rp${groupedProducts[name].prices[0].toLocaleString()}`,
+          size: Array.from(groupedProducts[name].sizes).join(', ') || '-',
+          image: groupedProducts[name].image
+        }));
+
+        uniqueProducts.forEach(p => {
+          const availability = p.totalStock > 0 ? 'Ada' : 'Tidak Ada';
+          tbody.innerHTML += `
+            <tr data-id="${p.codes.split(', ')[0]}"> <!-- Ambil ID dari kode pertama -->
+              <td><img src="${p.image}" alt="${p.name}" class="product-img"></td>
+              <td>${p.name}</td>
+              <td>${p.category}</td>
+              <td class="${p.totalStock <= 0 ? 'out-stock' : 'in-stock'}">
+                ${p.totalStock} ${p.totalStock <= 0 ? 'ada stok' : 'tersedia'}
+              </td>
+              <td>${p.price}</td>
+              <td>${availability}</td>
+              <td>
+                <button onclick="editProductByName('${p.name}')">Edit</button>
+                <button onclick="deleteProductByName('${p.name}')">Delete</button>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (err) {
+        console.error('Gagal load produk:', err);
+        document.getElementById('productBody').innerHTML = `<tr><td colspan="7" style="text-align:center;">Error memuat data</td></tr>`;
+      }
+    }
+
+    function filterProducts() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const rows = document.querySelectorAll('#productBody tr');
+      rows.forEach(row => {
+        const name = row.children[1]?.textContent.toLowerCase() || '';
+        row.style.display = name.includes(search) ? '' : 'none';
+      });
+    }
+
+    // Fungsi Edit berdasarkan nama (edit semua varian)
+    async function editProductByName(name) {
+      try {
+        const res = await fetch('/api');
+        const data = await res.json();
+        const products = data.filter(p => p.name.toLowerCase() === name.toLowerCase());
+
+        if (products.length > 0) {
+          const p = products[0]; // Ambil satu representasi untuk form
+          document.getElementById('editId').value = p.id;
+          document.getElementById('editName').value = p.name;
+          document.getElementById('editCode').value = products.map(p => p.code).join(', ');
+          document.getElementById('editCategory').value = p.category || '';
+          document.getElementById('editStock').value = products.reduce((sum, p) => sum + (p.stock || 0), 0);
+          document.getElementById('editPrice').value = products[0].price || 0;
+          document.getElementById('editSize').value = Array.from(new Set(products.map(p => p.size).filter(s => s))).join(', ') || '';
+          document.getElementById('editImage').value = p.image || '';
+
+          document.getElementById('editModal').style.display = 'block';
+        }
+      } catch (err) {
+        console.error('Gagal load data edit:', err);
+      }
+    }
+
+    async function saveEdit() {
+      const id = document.getElementById('editId').value.split(',')[0]; // Ambil ID pertama
+      const updatedProduct = {
+        name: document.getElementById('editName').value,
+        code: document.getElementById('editCode').value.split(',')[0], // Simpan satu kode utama
+        category: document.getElementById('editCategory').value,
+        stock: parseInt(document.getElementById('editStock').value),
+        price: parseInt(document.getElementById('editPrice').value),
+        size: document.getElementById('editSize').value,
+        image: document.getElementById('editImage').value
+      };
+
+      try {
+        const res = await fetch(`/api/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedProduct)
+        });
+
+        if (res.ok) {
+          alert('Produk berhasil diupdate!');
+          closeModal();
+          loadProducts();
+        } else {
+          const error = await res.json();
+          alert('Gagal update produk: ' + (error.message || 'Error tidak diketahui'));
+        }
+      } catch (err) {
+        console.error('Error saat update:', err);
+        alert('Terjadi kesalahan saat menyimpan.');
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    // Fungsi Delete berdasarkan nama (hapus semua varian)
+    async function deleteProductByName(name) {
+      if (confirm('Yakin hapus semua varian produk ini?')) {
+        try {
+          const res = await fetch('/api');
+          const data = await res.json();
+          const productsToDelete = data.filter(p => p.name.toLowerCase() === name.toLowerCase());
+
+          for (const p of productsToDelete) {
+            await fetch(`/api/${p.id}`, { method: 'DELETE' });
+          }
+
+          alert('Semua varian produk berhasil dihapus!');
+          loadProducts();
+        } catch (err) {
+          console.error('Error saat hapus:', err);
+          alert('Terjadi kesalahan saat menghapus.');
+        }
+      }
+    }
+
+    // Refresh list setelah kembali dari /addproduct
+    window.addEventListener('load', () => {
+      loadProducts();
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('added') === 'true') {
+        loadProducts();
+      }
+    });
+  </script>
+</body>
+</html>

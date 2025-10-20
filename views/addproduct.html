@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tambah Produk | NScommerce</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="dashboard-body">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand">
+      <h2>NScommerce</h2>
+    </div>
+
+    <div class="profile">
+      <div class="avatar">👤</div>
+      <h3>NSLooks</h3>
+    </div>
+
+    <ul class="menu">
+      <li><a href="/">🏬 View Store</a></li>
+      <li><a href="/dashboard">🏠 Dashboard</a></li>
+      <hr>
+      <li><a href="/product">Product</a></li>
+      <li><a href="/stock">Stock</a></li>
+      <li><a href="/category">Category</a></li>
+      <li><a href="/discount">Discount</a></li>
+    </ul>
+
+    <form action="/logout" method="get">
+      <button class="logout-btn">Logout</button>
+    </form>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="form-header">
+      <h1>Tambah Produk Baru</h1>
+      <button class="back-btn" onclick="window.location.href='/product'">← Kembali</button>
+    </div>
+
+    <form id="productForm" class="add-product-form">
+      <div class="form-group">
+        <label>Media (Gambar)</label>
+        <input type="file" id="imageInput" accept="image/*">
+      </div>
+
+      <div class="form-group">
+        <label>Nama Produk</label>
+        <input type="text" id="name" placeholder="Masukkan nama produk" required>
+      </div>
+
+      <div class="form-group">
+        <label>Kode Produk</label>
+        <input type="text" id="code" placeholder="Kode unik produk" required>
+      </div>
+
+      <div class="form-group">
+        <label>Kategori</label>
+        <!-- Sekarang dropdown otomatis -->
+        <select id="category" required>
+          <option value="">-- Pilih Kategori --</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Stok</label>
+        <input type="number" id="stock" min="0" placeholder="Jumlah stok tersedia" required>
+      </div>
+
+      <div class="form-group">
+        <label>Harga</label>
+        <input type="number" id="price" min="0" placeholder="Harga produk" required>
+      </div>
+
+      <div class="form-group">
+        <label>Ukuran</label>
+        <select id="size" required>
+          <option value="">-- Pilih Ukuran --</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+          <option value="XXXL">XXXL</option>
+        </select>
+      </div>
+
+      <button type="submit" class="save-btn">💾 Simpan Produk</button>
+    </form>
+  </div>
+
+  <script>
+    // === 1️⃣ Ambil kategori dari backend (categories.json) ===
+    fetch('/categories/api')
+      .then(res => res.json())
+      .then(categories => {
+        const select = document.getElementById('category');
+        categories.forEach(cat => {
+          const option = document.createElement('option');
+          option.value = cat.name;
+          option.textContent = cat.name;
+          select.appendChild(option);
+        });
+      })
+      .catch(err => console.error('Gagal memuat kategori:', err));
+
+    // === 2️⃣ Simpan produk baru ===
+    document.getElementById('productForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const code = document.getElementById('code').value.trim();
+      const category = document.getElementById('category').value.trim();
+      const stock = parseInt(document.getElementById('stock').value);
+      const price = parseInt(document.getElementById('price').value);
+      const size = document.getElementById('size').value;
+      const fileInput = document.getElementById('imageInput');
+      let image = '';
+
+      // Konversi gambar ke Base64
+      if (fileInput.files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+          image = e.target.result;
+          await saveProduct({ name, code, category, stock, price, size, image });
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        await saveProduct({ name, code, category, stock, price, size, image });
+      }
+    });
+
+    // === 3️⃣ Kirim ke backend (POST /api) ===
+    async function saveProduct(product) {
+      const res = await fetch('/api', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(product)
+      });
+
+      const result = await res.json();
+      alert(result.message || 'Produk berhasil ditambahkan!');
+      window.location.href = '/product';
+    }
+  </script>
+</body>
+</html>

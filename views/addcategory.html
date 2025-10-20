@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Category | NScommerce</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="dashboard-body">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand"><h2>NScommerce</h2></div>
+    <div class="profile">
+      <div class="avatar">👤</div>
+      <h3>NSLooks</h3>
+    </div>
+
+    <ul class="menu">
+      <li><a href="/">🏬 View Store</a></li>
+      <li><a href="/dashboard">🏠 Dashboard</a></li>
+      <hr />
+      <li><a href="/product">Product</a></li>
+      <li><a href="/stock">Stock</a></li>
+      <li><a href="/category" class="active">Category</a></li>
+      <li><a href="/discount">Discount</a></li>
+    </ul>
+
+    <form action="/logout" method="get">
+      <button class="logout-btn">Logout</button>
+    </form>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="header-flex-between">
+      <h2>Tambah Kategori</h2>
+    </div>
+
+    <div class="form-card">
+      <h3>Kategori</h3>
+      <form id="categoryForm">
+        <div class="form-group">
+          <label for="name">Nama Kategori <span class="required">*</span></label>
+          <input type="text" id="name" placeholder="Nama" required />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Deskripsi</label>
+          <textarea id="description" rows="3" placeholder="Deskripsi"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="action-btn">Simpan</button>
+          <button type="button" class="cancel-btn" onclick="window.location.href='/category'">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // === Kirim data ke server ===
+    document.getElementById('categoryForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const description = document.getElementById('description').value.trim();
+
+      if (!name) return alert('Nama kategori wajib diisi!');
+
+      try {
+        const res = await fetch('/categories/api', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, description })
+        });
+
+        const result = await res.json();
+        alert(result.message || 'Kategori berhasil ditambahkan!');
+        window.location.href = '/category';
+      } catch (err) {
+        console.error(err);
+        alert('Gagal menyimpan kategori.');
+      }
+    });
+  </script>
+</body>
+</html>

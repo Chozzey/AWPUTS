@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1760969785194,
+    "name": "Srikandi kebaya",
+    "code": "SK001",
+    "category": "Srikandi",
+    "stock": 1,
+    "price": 1000000,
+    "size": "S",
+    "image": "/default.jpg",
+    "createdAt": "2025-10-20T14:16:25.194Z"
+  },
+  {
+    "id": 1760977218043,
+    "name": "Batik Srikandi",
+    "code": "SK002",
+    "category": "Srikandi",
+    "stock": 41,
+    "price": 900000,
+    "size": "XL",
+    "image": "/default.jpg",
+    "createdAt": "2025-10-20T16:20:18.043Z"
+  },
+  {
+    "id": 1760984478775,
+    "name": "Kemeja hem cowo",
+    "code": "KH001",
+    "category": "Men",
+    "stock": 8,
+    "price": 899000,
+    "size": "XL",
+    "image": "/default.jpg",
+    "createdAt": "2025-10-20T18:21:18.775Z"
+  },
+  {
+    "id": 1760997705390,
+    "name": "Srikandi kebaya",
+    "code": "SK003",
+    "category": "Srikandi",
+    "stock": 7,
+    "price": 699000,
+    "size": "L",
+    "image": "/default.jpg",
+    "createdAt": "2025-10-20T22:01:45.390Z"
+  }
+]

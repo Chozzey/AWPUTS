@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Category | NScommerce</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="dashboard-body">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand">
+      <h2>NScommerce</h2>
+    </div>
+
+    <div class="profile">
+      <div class="avatar">👤</div>
+      <h3>NSLooks</h3>
+    </div>
+
+    <ul class="menu">
+      <li><a href="/">🏬 View Store</a></li>
+      <li><a href="/dashboard">🏠 Dashboard</a></li>
+      <hr>
+      <li><a href="/product">Product</a></li>
+      <li><a href="/stock">Stock</a></li>
+      <li><a href="/category" class="active">Category</a></li>
+      <li><a href="/discount">Discount</a></li>
+    </ul>
+
+    <form action="/logout" method="get">
+      <button class="logout-btn">Logout</button>
+    </form>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="main-header">
+      <h2>Category Management</h2>
+      <button class="action-btn" onclick="window.location.href='/addcategory'">+ Add Category</button>
+    </div>
+
+    <div class="category-container">
+      <table class="category-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nama Kategori</th>
+            <th>Deskripsi</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="categoryTable">
+          <!-- Data kategori akan dimuat di sini -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // === Baca data kategori dari backend ===
+    async function loadCategories() {
+      const res = await fetch('/categories/api');
+      const data = await res.json();
+      const tbody = document.getElementById('categoryTable');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        tbody.innerHTML = `
+          <tr><td colspan="4" style="text-align:center;color:#777;">Belum ada kategori</td></tr>
+        `;
+        return;
+      }
+
+      data.forEach((cat, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td contenteditable="false">${cat.name}</td>
+          <td contenteditable="false">${cat.description || '-'}</td>
+          <td>
+            <button class="edit-btn" onclick="editCategory(${cat.id}, this)">✏️</button>
+            <button class="delete-btn" onclick="deleteCategory(${cat.id})">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // === Update kategori ===
+    async function editCategory(id, btn) {
+      const tr = btn.closest('tr');
+      const nameCell = tr.children[1];
+      const descCell = tr.children[2];
+
+      if (btn.textContent.includes('✏️')) {
+        btn.textContent = '💾';
+        nameCell.contentEditable = true;
+        descCell.contentEditable = true;
+        nameCell.focus();
+      } else {
+        btn.textContent = '✏️';
+        nameCell.contentEditable = false;
+        descCell.contentEditable = false;
+
+        const updated = {
+          name: nameCell.textContent.trim(),
+          description: descCell.textContent.trim()
+        };
+
+        const res = await fetch(`/categories/api/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated)
+        });
+        const result = await res.json();
+        alert(result.message);
+        loadCategories();
+      }
+    }
+
+    // === Hapus kategori ===
+    async function deleteCategory(id) {
+      if (!confirm('Yakin ingin menghapus kategori ini?')) return;
+      const res = await fetch(`/categories/api/${id}`, { method: 'DELETE' });
+      const result = await res.json();
+      alert(result.message);
+      loadCategories();
+    }
+
+    loadCategories();
+  </script>
+</body>
+</html>

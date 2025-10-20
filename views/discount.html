@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discount | NScommerce</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="dashboard-body">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand">
+      <h2>NScommerce</h2>
+    </div>
+
+    <div class="profile">
+      <div class="avatar">👤</div>
+      <h3>NSLooks</h3>
+    </div>
+
+    <ul class="menu">
+      <li><a href="/">🏬 View Store</a></li>
+      <li><a href="/dashboard">🏠 Dashboard</a></li>
+      <hr>
+      <li><a href="/product">Product</a></li>
+      <li><a href="/stock">Stock</a></li>
+      <li><a href="/category">Category</a></li>
+      <li><a href="/discount" class="active"> Discount</a></li>
+    </ul>
+
+    <form action="/logout" method="get">
+      <button class="logout-btn">Logout</button>
+    </form>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="header-flex">
+      <h2>Diskon Produk</h2>
+      <button class="action-btn" onclick="window.location.href='/adddiscount'">+ Buat Diskon</button>
+    </div>
+
+    <div class="discount-container">
+      <table class="discount-table">
+        <thead>
+          <tr>
+            <th>Nama Diskon</th>
+            <th>Diskon</th>
+            <th>Minimal Pembelian</th>
+            <th>Jumlah Produk</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="discountTableBody">
+          <!-- Data Diskon Dimuat dari JSON -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    fetch('/discounts/api')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.getElementById('discountTableBody');
+        if (data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#777;">Belum ada diskon</td></tr>`;
+          return;
+        }
+
+        data.forEach(d => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${d.name}</td>
+            <td>${d.discountType === '%' ? d.discountValue + '%' : 'Rp ' + d.discountValue.toLocaleString()}</td>
+            <td>${d.minPurchase ? 'Rp ' + d.minPurchase.toLocaleString() : '-'}</td>
+            <td>${d.productCount || 0}</td>
+            <td><span class="status ${d.active ? 'active' : 'inactive'}">${d.active ? 'Aktif' : 'Tidak Aktif'}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+  </script>
+</body>
+</html>

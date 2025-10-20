@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan Stok Produk | NScommerce</title>
+  <style>
+    /* REPORT STYLING */
+    body.dashboard-body {
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+      background-color: #d9d9d9;
+    }
+
+    .report-main {
+      padding: 30px;
+      background-color: #d9d9d9;
+      min-height: 100vh;
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .report-title {
+      font-size: 32px;
+      color: #660000;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .report-nav {
+      display: flex;
+      gap: 15px;
+    }
+
+    .report-back-link,
+    .report-logout-link {
+      color: #4b0000;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .report-back-link:hover,
+    .report-logout-link:hover {
+      color: #660000;
+      text-decoration: underline;
+    }
+
+    .report-filter-section {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 30px;
+      margin-right: 1300px;
+    }
+
+    .report-subheading {
+      font-size: 20px;
+      color: #4b0000;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .report-filter-controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .report-input {
+      padding: 10px;
+      border: 2px solid #4b0000;
+      border-radius: 5px;
+      font-size: 16px;
+      width: 250px;
+      transition: border-color 0.3s ease;
+    }
+
+    .report-input:focus {
+      border-color: #660000;
+      outline: none;
+    }
+
+    .report-action-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #4b0000;
+      color: white;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    .report-action-btn:hover {
+      background-color: #660000;
+    }
+
+    .report-print-btn {
+      background-color: #660000;
+    }
+
+    .report-print-btn:hover {
+      background-color: #4b0000;
+    }
+
+    .report-table-section {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .report-table-header {
+      background-color: #4b0000;
+      color: white;
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .report-table-row:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .report-table-row:hover {
+      background-color: #f1e0e0;
+      transition: background-color 0.3s ease;
+    }
+
+    .report-table-cell {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .report-no-data {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+
+    /* RESPONSIF */
+    @media (max-width: 768px) {
+      .report-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .report-nav {
+        margin-top: 10px;
+      }
+
+      .report-filter-controls {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .report-input {
+        width: 100%;
+      }
+
+      .report-table-header,
+      .report-table-cell {
+        padding: 8px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .report-title {
+        font-size: 24px;
+      }
+
+      .report-subheading {
+        font-size: 18px;
+      }
+    }
+
+    /* PRINT STYLING */
+    @media print {
+      .report-header,
+      .report-filter-section,
+      .report-nav,
+      .report-back-link,
+      .report-logout-link,
+      .report-filter-controls,
+      .report-input,
+      .report-action-btn,
+      .report-print-btn {
+        display: none !important;
+      }
+
+      .report-table-section {
+        box-shadow: none;
+        padding: 0;
+        background: none;
+      }
+
+      .report-table {
+        border: 1px solid #ddd;
+        page-break-inside: auto;
+      }
+
+      .report-table-header,
+      .report-table-cell {
+        border: 1px solid #ddd;
+      }
+    }
+  </style>
+</head>
+<body class="dashboard-body">
+  <div class="report-main">
+    <header class="report-header">
+      <h1 class="report-title">Laporan Stok Produk</h1>
+      <nav class="report-nav">
+        <a href="/dashboard" class="report-back-link">← Kembali ke Dashboard</a>
+        <a href="/logout" class="report-logout-link">Logout</a>
+      </nav>
+    </header>
+
+    <section class="report-filter-section">
+      <div class="report-filter-controls">
+        <input type="text" id="searchInput" class="report-input" placeholder="Cari nama produk...">
+        <button class="report-action-btn report-search-btn" onclick="loadReport()">Cari</button>
+        <button class="report-action-btn report-print-btn" onclick="printReport()">🖨️ Cetak Laporan</button>
+      </div>
+    </section>
+
+    <section class="report-table-section">
+      <table class="report-table">
+        <thead>
+          <tr>
+            <th class="report-table-header">Nama Produk</th>
+            <th class="report-table-header">Kode Varian</th>
+            <th class="report-table-header">Harga</th>
+            <th class="report-table-header">Stok</th>
+            <th class="report-table-header">Ukuran</th>
+          </tr>
+        </thead>
+        <tbody id="reportTableBody"></tbody>
+      </table>
+    </section>
+  </div>
+
+  <script>
+    async function loadReport() {
+      const search = document.getElementById('searchInput').value;
+      const tbody = document.getElementById('reportTableBody');
+      tbody.innerHTML = '';
+
+      try {
+        const res = await fetch(`/report/data?search=${encodeURIComponent(search)}`);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
+
+        if (data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" class="report-no-data">Tidak ada data ditemukan</td></tr>`;
+          return;
+        }
+
+        data.forEach(p => {
+          tbody.innerHTML += `
+            <tr class="report-table-row">
+              <td class="report-table-cell">${p.name}</td>
+              <td class="report-table-cell">${p.code || '-'}</td>
+              <td class="report-table-cell">Rp${p.price.toLocaleString()}</td>
+              <td class="report-table-cell">${p.stock}</td>
+              <td class="report-table-cell">${p.size || '-'}</td>
+            </tr>
+          `;
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        tbody.innerHTML = `<tr><td colspan="5" class="report-no-data">Gagal memuat data. Periksa console.</td></tr>`;
+      }
+    }
+
+    function printReport() {
+      window.print();
+    }
+
+    window.onload = loadReport;
+  </script>
+</body>
+</html>

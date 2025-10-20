@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Management | NScommerce</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="dashboard-body">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand">
+      <h2>NScommerce</h2>
+    </div>
+
+    <div class="profile">
+      <div class="avatar">👤</div>
+      <h3>NSLooks</h3>
+    </div>
+
+    <ul class="menu">
+      <li><a href="/">🏬 View Store</a></li>
+      <li><a href="/dashboard">🏠 Dashboard</a></li>
+      <hr>
+      <li><a href="/product">Product</a></li>
+      <li><a href="/stock" class="active">Stock</a></li>
+      <li><a href="/category">Category</a></li>
+      <li><a href="/discount">Discount</a></li>
+    </ul>
+
+    <form action="/logout" method="get">
+      <button class="logout-btn">Logout</button>
+    </form>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <h2>Stock Management</h2>
+    <div class="stock-container">
+      <table class="stock-table">
+        <thead>
+          <tr>
+            <th>Nama Produk</th>
+            <th>Varian</th>
+            <th>Kode Varian</th>
+            <th>Stok</th>
+          </tr>
+        </thead>
+        <tbody id="stockTableBody">
+          <!-- Baris produk dimuat dari products.json -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Ambil data dari products.json via endpoint server
+    async function loadStocks() {
+      try {
+        const res = await fetch('/stock/data'); // Endpoint baru untuk baca products.json
+        const products = await res.json();
+        const tbody = document.getElementById('stockTableBody');
+        tbody.innerHTML = '';
+
+        if (products.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#777;">Belum ada produk</td></tr>`;
+          return;
+        }
+
+        // Sort berdasarkan nama produk
+        products.sort((a, b) => a.name.localeCompare(b.name));
+
+        products.forEach(p => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>
+              <div class="product-info">
+                <img src="${p.image || '/default.jpg'}" alt="${p.name}" class="stock-img">
+                <span>${p.name}</span>
+              </div>
+            </td>
+            <td>${p.size || '-'}</td>
+            <td>${p.code || '-'}</td>
+            <td>
+              <div class="stock-control">
+                <button class="stock-btn" onclick="updateStock('${p.code}', -1)">-</button>
+                <input type="text" id="stock-${p.code}" value="${p.stock || 0}" readonly>
+                <button class="stock-btn" onclick="updateStock('${p.code}', 1)">+</button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('Gagal load stok:', err);
+        document.getElementById('stockTableBody').innerHTML = `<tr><td colspan="4" style="text-align:center;">Error memuat data</td></tr>`;
+      }
+    }
+
+    // Fungsi update stok berdasarkan kode varian
+    async function updateStock(code, change) {
+      const stockInput = document.getElementById(`stock-${code}`);
+      let newStock = parseInt(stockInput.value) + change;
+      if (newStock < 0) newStock = 0;
+      stockInput.value = newStock;
+
+      try {
+        const res = await fetch(`/stock/update/${code}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ stock: newStock })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          console.log(data.message);
+        } else {
+          alert('Gagal update stok: ' + (data.message || 'Error tidak diketahui'));
+          stockInput.value = parseInt(stockInput.value) - change; // Rollback kalau gagal
+        }
+      } catch (err) {
+        console.error('Error saat update stok:', err);
+        alert('Terjadi kesalahan saat menyimpan stok.');
+        stockInput.value = parseInt(stockInput.value) - change; // Rollback kalau gagal
+      }
+    }
+
+    // Load stok saat halaman dimuat
+    window.addEventListener('load', loadStocks);
+  </script>
+</body>
+</html>
