@@ -12,7 +12,6 @@ const discountRoutes = require('./routes/discount');
 const stockRouter = require('./routes/stock');
 
 const app = express();
-const PORT = 3000;
 
 // Middleware
 app.use(bodyParser.json());
@@ -37,6 +36,8 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
